@@ -36,9 +36,9 @@ export default {
   created () {
     let u = sessionStorage.getItem('user');
     if (u) {
-      this.user = JSON.parse(u);
-      console.log(user);
-      this.$router.push('/');
+      /* this.user = JSON.parse(u);
+      console.log(u);
+      this.$router.push('/'); */
     }
   }
 }

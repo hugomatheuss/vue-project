@@ -2,7 +2,7 @@
   <div class="col s12">
     <div clas="row">
       <div class="input-field col s6 offset-s3">
-        <input type="text" placeholder="login" v-model="user.login">
+        <input type="text" placeholder="email" v-model="user.email">
       </div>
       <div class="input-field col s6 offset-s3">
         <input type="text" placeholder="senha" v-model="user.password">
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       user: {
-        login:'',
+        email:'',
         password:''
       },
     };
@@ -31,18 +31,17 @@ export default {
   methods: {
     login() {
       axios.post(`http://127.0.0.1:8001/api/login`, {
-        login: this.user.login,
+        email: this.user.email,
         password: this.user.password
       })
       .then(res => {
-        if (res.data.token) {
+        if (res.data.access_token) {
+          console.log(res.data.status);
           console.log("logged in");
           sessionStorage.setItem('user', JSON.stringify(res.data));
           this.$router.push('/');
-        } else if (res.data.status == false) {
-          console.log('login not found');
-          alert('Login not found');
         } else {
+          console.log(res);
           console.log('Errors');
           let errors = '';
           for(let error of Object.values(res.data)) {

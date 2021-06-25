@@ -23,10 +23,23 @@ import LoginVue from '@/components/layouts/LoginVue'
 
 export default {
   name: 'LoginTemplate',
+  data() {
+    return {
+      user: false
+    }
+  },
   components: {
     NavBarVue,
     GridVue,
     LoginVue
+  },
+  created () {
+    let u = sessionStorage.getItem('user');
+    if (u) {
+      this.user = JSON.parse(u);
+      console.log(user);
+      this.$router.push('/');
+    }
   }
 }
 </script>

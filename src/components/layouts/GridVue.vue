@@ -28,25 +28,15 @@
         </thead>
 
         <tbody>
-          <tr>
-            <td>Baking cake</td>
-            <td>dairy</td>
-            <td>4</td>
-            <td>R$ 600</td>
-            <td>02/01/2020</td>
+          <tr v-for="item in productsList" :key="item.id">
+            <td>{{ item.title }}</td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.rating }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.created_at }}</td>
             <td>
-              <a href="#">Edit</a>
-              <a href="#">Delete</a>
-            </td>
-          </tr>
-          <tr>
-            <td>Raw legums</td>
-            <td>vegetable</td>
-            <td>3</td>
-            <td>R$ 700</td>
-            <td>29/12/2019</td>
-            <td>
-              <a href="#">Edit</a>
+              <a href="#">Show</a>
+              <router-link to="/edit">Edit</router-link>
               <a href="#">Delete</a>
             </td>
           </tr>
@@ -57,18 +47,33 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: "GridVue",  
   props:[],
   data() {
     return {
-      jsonFile: ''
+      jsonFile: '',
+      products:[]
     };
   },
+  created() {
+    let u = this.$store.getters.getUser;
+    if (u) {
+      this.$http.get(this.$urlAPI + `products`, {
+        "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
+      })
+      .then(res => {
+        //this.products = res.data.data;
+        this.$store.commit('setProducts', res.data.data);
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    }
+  },
   methods: {
-    async jsonUpload(e) {
+    jsonUpload(e) {
       //this.jsonFile = e.target.files[0] || e.dataTransfer.files[0];
       this.jsonFile = this.$refs.file.files[0];
       let formData = new FormData();
@@ -76,7 +81,7 @@ export default {
       formData.append("jsonFile", this.jsonFile);
       console.log(this.jsonFile);
 
-      axios.post(`http://127.0.0.1:8000/api/jsonUpload`, formData, {
+      this.$http.post(this.$urlAPI + `jsonUpload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -87,6 +92,11 @@ export default {
       .catch(e => {
         console.log(e);
       });
+    }
+  },
+  computed: {
+    productsList() {
+      return this.$store.getters.getProducts;
     }
   }
 };

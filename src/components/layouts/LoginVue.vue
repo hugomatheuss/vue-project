@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 
 export default {
   name: "LoginVue",  
@@ -30,18 +29,16 @@ export default {
   },
   methods: {
     login() {
-      axios.post(`http://127.0.0.1:8000/api/login`, {
+      this.$http.post(this.$urlAPI + `login`, {
         email: this.user.email,
         password: this.user.password
       })
       .then(res => {
         if (res.data.access_token) {
-          console.log(res.data.status);
-          console.log("logged in");
+          this.$store.commit('setUser', res.data)
           sessionStorage.setItem('user', JSON.stringify(res.data));
-          this.$router.push('/');
+          this.$router.push('/', () => {});
         } else {
-          console.log(res);
           console.log('Errors');
           let errors = '';
           for(let error of Object.values(res.data)) {

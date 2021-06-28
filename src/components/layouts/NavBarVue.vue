@@ -20,15 +20,20 @@ export default {
     };
   },
   created () {
-    let u = sessionStorage.getItem('user');
+    let u = this.$store.getters.getUser;
     if (u) {
-      this.user = JSON.parse(u);
-      console.log(u);
+      this.user = u;
+      this.$router.push('/', () => {});
+    } else {
+      this.$router.push('/login', () => {});
     }
   },
   methods:{
     logout() {
+      this.$store.commit('setUser', null);
       sessionStorage.clear();
+      this.user = false;
+      this.$router.push('/login', () => {});
     }
   }
 };

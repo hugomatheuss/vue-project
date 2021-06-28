@@ -32,14 +32,6 @@ export default {
     NavBarVue,
     GridVue,
     LoginVue
-  },
-  created () {
-    let u = sessionStorage.getItem('user');
-    if (u) {
-      /* this.user = JSON.parse(u);
-      console.log(u);
-      this.$router.push('/'); */
-    }
   }
 }
 </script>

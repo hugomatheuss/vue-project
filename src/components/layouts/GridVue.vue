@@ -5,7 +5,7 @@
         <div class="file-field input-field">
           <div class="btn">
             <span>Enviar</span>
-            <input type="file" multiple>
+            <input type="file" ref="file" v-on:change="jsonUpload" multiple>
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text" placeholder="Anexar arquivo .json">
@@ -57,12 +57,38 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: "GridVue",  
   props:[],
   data() {
-    return {};
+    return {
+      jsonFile: ''
+    };
   },
+  methods: {
+    async jsonUpload(e) {
+      //this.jsonFile = e.target.files[0] || e.dataTransfer.files[0];
+      this.jsonFile = this.$refs.file.files[0];
+      let formData = new FormData();
+
+      formData.append("jsonFile", this.jsonFile);
+      console.log(this.jsonFile);
+
+      axios.post(`http://127.0.0.1:8000/api/jsonUpload`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(res => {
+        console.log('SUCCESS!!');
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }
+  }
 };
 </script>
 

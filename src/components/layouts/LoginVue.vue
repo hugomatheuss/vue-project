@@ -5,7 +5,7 @@
         <input type="text" placeholder="email" v-model="user.email">
       </div>
       <div class="input-field col s6 offset-s3">
-        <input type="text" placeholder="senha" v-model="user.password">
+        <input type="password" placeholder="senha" v-model="user.password">
       </div>
       <div class="input-field col s6 offset-s3">
         <button class="btn" v-on:click="login">Entrar</button>
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     login() {
-      axios.post(`http://127.0.0.1:8001/api/login`, {
+      axios.post(`http://127.0.0.1:8000/api/login`, {
         email: this.user.email,
         password: this.user.password
       })

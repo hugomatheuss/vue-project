@@ -64,7 +64,6 @@ export default {
         "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
       })
       .then(res => {
-        console.log(res.data);
         this.$store.commit('setProducts', res.data.data);
       })
       .catch(e => {
@@ -78,7 +77,6 @@ export default {
         "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
       })
       .then(res => {
-        console.log(res);
         this.$store.commit('deleteProduct', id);
       })
       .catch(e => {
@@ -89,15 +87,15 @@ export default {
     submitFile() {
       let formData = new FormData();
       formData.append("jsonFile", this.jsonFile);
-      console.log(this.$store.getters.getToken);
-      this.$http.post(this.$urlAPI + `jsonUpload`, {
-        "headers": {
-            'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2),
-            "Authorization": "Bearer " + this.$store.getters.getToken
-          },
+      this.$http.post(this.$urlAPI + `jsonUpload`, formData, {
+        headers: {
+              'Content-Type': "multipart/form-data",
+              'Authorization': "Bearer " + this.$store.getters.getToken
+            },
       })
       .then(res => {
-        console.log(res);
+        console.log(res.data);
+        this.$store.commit('setProducts', res.data);
       })
       .catch(e => {
         console.log(e);

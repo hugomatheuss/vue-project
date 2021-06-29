@@ -44,10 +44,12 @@ export default {
     let u = this.$store.getters.getUser;
     if (u) {
       this.$http.get(this.$urlAPI + `products/` + this.$route.params.id, {
-        "headers": {"Authorization": "Bearer " + this.$store.getters.getToken},
+        "headers": {
+            'Authorization': "Bearer " + this.$store.getters.getToken
+          },
       })
       .then(res => {
-        console.log(res.data.data);
+        console.log(res);
         this.$store.commit('setProduct', res.data.data);
       })
       .catch(e => {

@@ -1,17 +1,17 @@
 <template>
   <div class="col s12">
     <div class="row">
-      <form action="#">
-        <div class="file-field input-field">
-          <div class="btn">
-            <span>Enviar</span>
-            <input type="file" ref="file" v-on:change="jsonUpload" multiple>
-          </div>
+      <div class="file-field input-field">
+          <input type="file" ref="file" @change="handleFileUpload" multiple>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text" placeholder="Anexar arquivo .json">
           </div>
-        </div>
-      </form>
+      </div>
+      <div>
+        <button class="btn" @click="submitFile">
+            <span>Send</span>
+        </button>
+      </div>
     </div>
 
     <div class="row">
@@ -86,25 +86,25 @@ export default {
       })
     },
 
-    jsonUpload(e) {
-      //this.jsonFile = e.target.files[0] || e.dataTransfer.files[0];
-      this.jsonFile = this.$refs.file.files[0];
+    submitFile() {
       let formData = new FormData();
-
       formData.append("jsonFile", this.jsonFile);
-      console.log(this.jsonFile);
-
-      this.$http.post(this.$urlAPI + `jsonUpload`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      console.log(this.$store.getters.getToken);
+      this.$http.post(this.$urlAPI + `jsonUpload`, {
+        "headers": {
+            'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2),
+            "Authorization": "Bearer " + this.$store.getters.getToken
+          },
       })
       .then(res => {
-        console.log('SUCCESS!!');
+        console.log(res);
       })
       .catch(e => {
         console.log(e);
       });
+    },
+    handleFileUpload() {
+      this.jsonFile = this.$refs.file.files[0];
     }
   },
   computed: {

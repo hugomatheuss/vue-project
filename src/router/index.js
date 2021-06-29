@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/pages/home/Home'
 import Login from '@/pages/login/Login'
 import Edit from '@/pages/edit/Edit'
+import Show from '@/pages/show/Show'
 
 Vue.use(Router)
 
@@ -40,9 +41,14 @@ export default new Router({
       component: Login
     },
     {
-      path: '/edit',
+      path: '/edit/:id',
       name: 'Edit',
       component: Edit
+    },
+    {
+      path: '/show/:id',
+      name: 'Show',
+      component: Show,
     }
   ]
 })

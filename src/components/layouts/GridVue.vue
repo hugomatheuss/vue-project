@@ -35,8 +35,8 @@
             <td>{{ item.price }}</td>
             <td>{{ item.created_at }}</td>
             <td>
-              <a href="#">Show</a>
-              <router-link to="/edit">Edit</router-link>
+              <router-link :to="{ name: 'Show', params: { id: item.id } }">Show</router-link>
+              <router-link :to="{ name: 'Edit', params: { id: item.id } }">Edit</router-link>
               <a href="#">Delete</a>
             </td>
           </tr>
@@ -54,23 +54,23 @@ export default {
   data() {
     return {
       jsonFile: '',
-      products:[]
+      products:[],
     };
   },
   created() {
     let u = this.$store.getters.getUser;
     if (u) {
-      this.$http.get(this.$urlAPI + `products`, {
+      this.$http.get(this.$urlAPI + `products/`, {
         "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
       })
       .then(res => {
-        //this.products = res.data.data;
+        console.log(res.data);
         this.$store.commit('setProducts', res.data.data);
       })
       .catch(e => {
         console.log(e);
       })
-    }
+    } 
   },
   methods: {
     jsonUpload(e) {

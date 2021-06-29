@@ -15,6 +15,7 @@ Vue.prototype.$urlAPI = 'http://127.0.0.1:8000/api/'
 var store = {
   state: {
     user: sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null,
+    product: '',
     products:[]
   },
   getters: {
@@ -24,6 +25,9 @@ var store = {
     getToken: state => {
       return state.user.access_token;
     },
+    getProduct: state => {
+      return state.product;
+    },
     getProducts: state => {
       return state.products;
     }
@@ -31,6 +35,9 @@ var store = {
   mutations: {
     setUser(state, u) {
       state.user = u;
+    },
+    setProduct(state, p) {
+      state.product = p;
     },
     setProducts(state, p) {
       state.products = p;

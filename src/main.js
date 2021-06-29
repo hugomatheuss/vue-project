@@ -5,8 +5,16 @@ import App from './App';
 import router from './router';
 import axios from 'axios';
 import Vuex from 'vuex';
+import money from 'v-money'
 
+//ANALISAR DPS
 Vue.use(Vuex)
+Vue.use(money, {
+  precision: 2,
+  decimal: ',',
+  thousands: '.',
+  prefix: 'R$ '
+})
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
@@ -41,6 +49,10 @@ var store = {
     },
     setProducts(state, p) {
       state.products = p;
+    },
+    deleteProduct(state, id) {
+      let index = state.products.findIndex(product => product.id == id);
+      state.products.splice(index, 1);
     }
   }
 }

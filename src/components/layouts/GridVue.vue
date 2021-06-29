@@ -37,7 +37,7 @@
             <td>
               <router-link :to="{ name: 'Show', params: { id: item.id } }">Show</router-link>
               <router-link :to="{ name: 'Edit', params: { id: item.id } }">Edit</router-link>
-              <a href="#">Delete</a>
+              <button v-on:click="deleteProduct(item.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -73,6 +73,19 @@ export default {
     } 
   },
   methods: {
+    deleteProduct(id) {
+      this.$http.delete(this.$urlAPI + `products/` + id, {
+        "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
+      })
+      .then(res => {
+        console.log(res);
+        this.$store.commit('deleteProduct', id);
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    },
+
     jsonUpload(e) {
       //this.jsonFile = e.target.files[0] || e.dataTransfer.files[0];
       this.jsonFile = this.$refs.file.files[0];

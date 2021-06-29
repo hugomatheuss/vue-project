@@ -49,6 +49,10 @@ export default new Router({
       path: '/show/:id',
       name: 'Show',
       component: Show,
+    },
+    {
+      path: '/delete/:id',
+      name: 'Delete',
     }
   ]
 })

@@ -8,10 +8,19 @@
         <input type="text" placeholder="type" v-model="product.type" />
       </div>
       <div class="input-field col s6 offset-s3">
-        <input type="number" placeholder="rating" v-model="product.rating" />
+        <input type="text" placeholder="type" v-model="product.description" />
+      </div>
+      <div class="input-field col s6 offset-s3">
+        <input type="text" placeholder="type" v-model="product.height" />
+      </div>
+      <div class="input-field col s6 offset-s3">
+        <input type="text" placeholder="type" v-model="product.width" />
       </div>
       <div class="input-field col s6 offset-s3">
         <money v-model="product.price"></money>
+      </div>
+      <div class="input-field col s6 offset-s3">
+        <input type="number" placeholder="rating" v-model="product.rating" />
       </div>
       <div class="input-field col s6 offset-s3">
         <button class="btn" v-on:click="edit">Salvar</button>
@@ -25,7 +34,15 @@
 export default {
   name: "EditVue",
   data() {
-    return {};
+    return {
+      title: '',
+      type: '',
+      rating: '',
+      price: '',
+      description: '',
+      heigth: '',
+      width: ''
+    };
   },
   created () {
     let u = this.$store.getters.getUser;
@@ -49,17 +66,22 @@ export default {
   },
   methods: {
     edit() {
-      this.$http.put(this.$urlAPI + `products` + this.$route.params.id, {
-        title: this.title,
-        type: this.type,
-        rating: this.rating,
-        price: this.price
+      this.$http.put(this.$urlAPI + `products/` + this.$route.params.id, {
+        title: this.product.title,
+        type: this.product.type,
+        rating: this.product.rating,
+        price: this.product.price,
+        description: this.product.description,
+        heigth: this.product.heigth,
+        width: this.product.width
       }, {
-        "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
+        headers: {
+            'Authorization': "Bearer " + this.$store.getters.getToken
+          }
       })
       .then(res => {
-        this.$store.commit('setUser', res.data);
-        sessionStorage.setItem('user', JSON.stringify(res.data));
+        this.$store.commit('setUser', res.data.data);
+        this.$router.push('/', () => {});
       })
       .catch(e => {
         console.log(e);

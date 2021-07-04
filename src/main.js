@@ -18,7 +18,7 @@ Vue.use(money, {
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-Vue.prototype.$urlAPI = 'http://127.0.0.1:8000/api/'
+Vue.prototype.$urlAPI = 'https://afternoon-atoll-08010.herokuapp.com/api/'
 
 var store = {
   state: {

@@ -60,8 +60,13 @@ export default {
   created() {
     let u = this.$store.getters.getUser;
     if (u) {
-      this.$http.get(this.$urlAPI + `products/`, {
-        "headers": {"Authorization": "Bearer " + this.$store.getters.getToken}
+      this.$http.get(this.$urlAPI + `products`, {
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "auth",
+            "Access-Control-Allow-Methods": "get, post, options, put, patch, delete",
+            "Authorization": "Bearer " + this.$store.getters.getToken
+          }
       })
       .then(res => {
         this.$store.commit('setProducts', res.data.data);

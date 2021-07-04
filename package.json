@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@nuxtjs/proxy": "^2.1.0",
     "axios": "^0.21.1",
     "v-money": "^0.8.1",
     "vue": "^2.5.2",

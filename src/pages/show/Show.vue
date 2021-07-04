@@ -5,23 +5,43 @@
         <div class="card-content">
           <div>
             <label>Title:</label>
-            <p>{{ product[0].title }}</p>
+            <p>{{ product.title }}</p>
           </div>
           <div>
             <label>Type: </label>
-            <p>{{ product[0].type }}</p>
+            <p>{{ product.type }}</p>
           </div>
           <div>
-            <label>Rating:</label>
-            <p>{{ product[0].rating }}</p>
+            <label>Description: </label>
+            <p>{{ product.description }}</p>
+          </div>
+          <div>
+            <label>Filename: </label>
+            <p>{{ product.filename }}</p>
+          </div>
+          <div>
+            <label>Height: </label>
+            <p>{{ product.height }}</p>
+          </div>
+          <div>
+            <label>Width: </label>
+            <p>{{ product.width }}</p>
           </div>
           <div>
             <label>Price</label>
-            <p>{{ product[0].price }}</p>
+            <p>{{ product.price }}</p>
+          </div>
+          <div>
+            <label>Rating:</label>
+            <p>{{ product.rating }}</p>
           </div>
           <div>
             <label>Created</label>
-            <p>{{ product[0].created_at }}</p>
+            <p>{{ product.created_at }}</p>
+          </div>
+          <div>
+            <label>Updated</label>
+            <p>{{ product.updated_at }}</p>
           </div>
         </div>
       </div>
@@ -49,7 +69,7 @@ export default {
           },
       })
       .then(res => {
-        console.log(res);
+        console.log(res.data.data);
         this.$store.commit('setProduct', res.data.data);
       })
       .catch(e => {
@@ -61,7 +81,7 @@ export default {
   },
   computed: {
     product() {
-      return this.$store.getters.getProduct;
+      return this.$store.getters.getProduct[0];
     }
   }
 };

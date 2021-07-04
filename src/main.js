@@ -7,14 +7,7 @@ import axios from 'axios';
 import Vuex from 'vuex';
 import money from 'v-money'
 
-//ANALISAR DPS
-Vue.use(Vuex)
-Vue.use(money, {
-  precision: 2,
-  decimal: ',',
-  thousands: '.',
-  prefix: 'R$ '
-})
+Vue.use(Vuex);
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios

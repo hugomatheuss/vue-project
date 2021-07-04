@@ -1,6 +1,12 @@
 <template>
   <div class="col s12">
     <div class="row">
+      <p v-if="errors.length">
+        <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
+        <ul>
+          <li v-for="error in errors">{{ error }}</li>
+        </ul>
+      </p>
       <div class="file-field input-field">
           <input type="file" ref="file" @change="handleFileUpload" multiple>
           <div class="file-path-wrapper">
@@ -53,6 +59,8 @@ export default {
   props:[],
   data() {
     return {
+      errors: [],
+      allOk: false,
       jsonFile: '',
       products:[],
     };
@@ -69,12 +77,22 @@ export default {
           }
       })
       .then(res => {
-        this.$store.commit('setProducts', res.data.data);
+        if (res.data.message != 'Expired token') {
+          this.$store.commit('setProducts', res.data.data);
+        } else {
+          this.$store.commit('setUser', null);
+          sessionStorage.clear();
+          this.user = false;
+          this.$router.push('/login', () => {});
+        }
+          
       })
       .catch(e => {
         console.log(e);
       })
-    } 
+    } else {
+      this.$router.push('/login', () => {});
+    }
   },
   methods: {
     deleteProduct(id) {
@@ -89,22 +107,40 @@ export default {
       })
     },
 
-    submitFile() {
+    submitFile(e) {
+      this.errors = [];
       let formData = new FormData();
-      formData.append("jsonFile", this.jsonFile);
-      this.$http.post(this.$urlAPI + `jsonUpload`, formData, {
-        headers: {
-              'Content-Type': "multipart/form-data",
-              'Authorization': "Bearer " + this.$store.getters.getToken
-            },
-      })
-      .then(res => {
-        console.log(res.data);
-        this.$store.commit('setProducts', res.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+
+      if (!this.jsonFile) {
+        this.errors.push('arquivo json é obrigatório.');
+      } else if (this.jsonFile['type'] != 'application/json') {
+        this.errors.push('algum problema com o arquivo.');
+      }
+
+      if (!this.errors.length) {
+        this.allOk = true;
+      }
+
+      e.preventDefault();
+      
+      if (this.allOk) {
+          formData.append("jsonFile", this.jsonFile);
+
+          this.$http.post(this.$urlAPI + `jsonUpload`, formData, {
+          headers: {
+                'Content-Type': "multipart/form-data",
+                'Authorization': "Bearer " + this.$store.getters.getToken
+              },
+        })
+        .then(res => {
+          console.log(res);
+          this.$store.commit('setProducts', res.data);
+          location.reload();
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }
     },
     handleFileUpload() {
       this.jsonFile = this.$refs.file.files[0];

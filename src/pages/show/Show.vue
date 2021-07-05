@@ -17,7 +17,7 @@
           </div>
           <div>
             <label>Filename: </label>
-            <p>{{ product.filename }}</p>
+            <img :src="require('@/assets/images/' + product.filename)">
           </div>
           <div>
             <label>Height: </label>

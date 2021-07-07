@@ -69,7 +69,6 @@ export default {
           },
       })
       .then(res => {
-        console.log(res.data.data);
         this.$store.commit('setProduct', res.data.data);
       })
       .catch(e => {
@@ -81,7 +80,7 @@ export default {
   },
   computed: {
     product() {
-      return this.$store.getters.getProduct[0];
+      return this.$store.getters.getProduct[this.$store.getters.getProduct.length - 1];
     }
   }
 };

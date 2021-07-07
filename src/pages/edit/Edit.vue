@@ -133,7 +133,7 @@ export default {
   },
   computed: {
     product() {
-      return this.$store.getters.getProduct[0];
+      return this.$store.getters.getProduct[this.$store.getters.getProduct.length - 1];
     }
   }
 }
